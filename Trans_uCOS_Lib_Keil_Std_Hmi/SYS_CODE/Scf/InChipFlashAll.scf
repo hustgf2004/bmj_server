@@ -1,0 +1,61 @@
+;/****************************************Copyright (c)****************************************************
+;**                  Beijing TIANDI-MARCO Electro-Hydraulic Control System CO.,LTD.
+;**                                      
+;**                                 http://www.tdmarco.com
+;**
+;**--------------File Info---------------------------------------------------------------------------------
+;** File Name:              RelOutChip.scf
+;** Last modified Date:     2010-12-14
+;** Last Version:           1.0
+;** Descriptions:           Scatter File
+;**
+;**------------------------------------------------------------------------------------------------------
+;** Created By:             Lijianming
+;** Created date:           2010-12-14
+;** Version:                1.0
+;** Descriptions:           First version
+;**
+;**------------------------------------------------------------------------------------------------------
+;** Modified by:            
+;** Modified date:          
+;** Version:                
+;** Descriptions:          
+;**   
+;********************************************************************************************************/
+BOOT_LOAD 0x00000000
+{
+    ROM_EXEC 0x00000000
+    {
+        Startup.o (vectors, +First)
+        * (+RO)
+    }
+    
+
+    IRAM 0x40001400                                                     ;/*  默认MCU具有内部RAM         */
+    {
+        Startup.o (MyStacks) 
+    }
+    
+    ERAM 0x81000000                                                     ;/*  外扩RAM默认在BANK1         */
+    {
+        * (+RW,+ZI)
+    }
+    
+    STACKS_BOTTOM +0 UNINIT ;0x40003700
+    {
+        Startup.o (StackBottom)
+    }
+  
+    HEAP_BOTTOM +0 UNINIT
+    {
+        Startup.o (HeapBottom)
+    }
+
+    HEAPS 0x81040000 UNINIT                                             ;/*  根据外扩RAM实际大小更改    */
+    {
+        Startup.o (HeapTop)
+        Startup.o (StacksTop)
+    }
+}
+
+;********************************************************************************************************/
